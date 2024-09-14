@@ -1,6 +1,6 @@
-FROM alpine:3.20
+FROM node:22.8.0-alpine3.20
 
-# Install dependencies
+# Install Chrome and other dependencies
 RUN apk update && apk add --no-cache \
     wget \
     gnupg \
@@ -16,5 +16,11 @@ RUN apk update && apk add --no-cache \
 # Set the CHROME_BIN environment variable
 ENV CHROME_BIN=/usr/bin/chromium-browser
 
-# Set up the default command to run Chrome headless
+# Install npm (bundled with Node.js) and Angular CLI globally
+RUN npm install -g @angular/cli
+
+# Set up working directory
+WORKDIR /workspace/source
+
+# Default command
 CMD ["chromium-browser", "--headless", "--disable-gpu", "--no-sandbox", "--remote-debugging-port=9222", "--disable-dev-shm-usage"]

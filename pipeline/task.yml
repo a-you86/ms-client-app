@@ -33,11 +33,11 @@ spec:
         echo "Linted the code"
 
     - name: run-tests
-      image: bitnami/cypress
+      image: ahmedyousseff/node-chrome:latest
       script: |
         #!/bin/sh
         set -eux
         cd /workspace/source
-        export CHROME_BIN=$(which google-chrome)
+        export CHROME_BIN=/usr/bin/chromium-browser
         npm run test
         echo "Tests passed"
