@@ -25,12 +25,12 @@ module.exports = function (config) {
     jasmineHtmlReporter: {
       suppressAll: true // removes the duplicated traces
     },
-    browser:['ChromiumHeadlessCI'],
+    browsers: ['ChromeHeadlessNoSandbox'],
     customLaunchers: {
-      ChromiumHeadlessCI: {
-        base: 'ChromiumHeadless',
-        flags: ['--no-sandbox', '--disable-gpu'],
-      },
+      ChromeHeadlessNoSandbox: {
+        base: 'ChromeHeadless',
+        flags: ['--no-sandbox']
+      }
     },
     coverageReporter: {
       // eslint-disable-next-line @typescript-eslint/no-require-imports
@@ -42,7 +42,6 @@ module.exports = function (config) {
       ]
     },
     reporters: ['progress', 'kjhtml'],
-    browsers: ['Chrome'],
     restartOnFileChange: true
   });
 };
