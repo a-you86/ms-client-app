@@ -1,15 +1,17 @@
-// Karma configuration file, see link for more information
-// https://karma-runner.github.io/1.0/config/configuration-file.html
-
 module.exports = function (config) {
   config.set({
     basePath: '',
     frameworks: ['jasmine', '@angular-devkit/build-angular'],
     plugins: [
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
       require('karma-jasmine'),
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
       require('karma-chrome-launcher'),
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
       require('karma-jasmine-html-reporter'),
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
       require('karma-coverage'),
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
       require('@angular-devkit/build-angular/plugins/karma')
     ],
     client: {
@@ -24,6 +26,7 @@ module.exports = function (config) {
       suppressAll: true // removes the duplicated traces
     },
     coverageReporter: {
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
       dir: require('path').join(__dirname, './coverage/ms-client-app'),
       subdir: '.',
       reporters: [

@@ -5,7 +5,13 @@ import unusedImports from 'eslint-plugin-unused-imports';
 
 export default [
   { files: ['**/*.{js,mjs,cjs,ts}'] },
-  { languageOptions: { globals: globals.browser } },
+  { languageOptions: {
+    globals:  {
+      ...globals.node,
+      ...globals.browser,
+    }
+  }
+  },
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,
   {
@@ -34,6 +40,7 @@ export default [
           ],
         },
       ],
+      '@typescript-eslint/no-require-imports': 'off',
       '@typescript-eslint/no-empty-object-type': 'off',
       'no-console': ['error', { allow: ['warn', 'error'] }],
       'unused-imports/no-unused-imports': 'error',
