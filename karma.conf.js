@@ -25,6 +25,13 @@ module.exports = function (config) {
     jasmineHtmlReporter: {
       suppressAll: true // removes the duplicated traces
     },
+    browser:['ChromiumHeadlessCI'],
+    customLaunchers: {
+      ChromiumHeadlessCI: {
+        base: 'ChromiumHeadless',
+        flags: ['--no-sandbox', '--disable-gpu'],
+      },
+    },
     coverageReporter: {
       // eslint-disable-next-line @typescript-eslint/no-require-imports
       dir: require('path').join(__dirname, './coverage/ms-client-app'),
