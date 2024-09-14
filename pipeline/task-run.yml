@@ -1,0 +1,10 @@
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  name: ci-task-run
+spec:
+    taskRef:
+        name: ci-task
+    workspaces:
+      - name: shared-workspace
+        emptyDir: {}

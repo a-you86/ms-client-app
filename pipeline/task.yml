@@ -1,0 +1,42 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: ci-task
+spec:
+  workspaces:
+    - name: shared-workspace
+  steps:
+    - name: git-clone
+      image: alpine/git
+      script: |
+        #!/bin/sh
+        set -eux
+        git clone https://github.com/a-you86/ms-client-app.git /workspace/source
+        echo "Cloned the repository"
+
+    - name: install-dependencies
+      image: node:22
+      script: |
+        #!/bin/sh
+        set -eux
+        cd /workspace/source
+        npm install --legacy-peer-deps
+        echo "Installed dependencies"
+
+    - name: run-lint
+      image: node:22
+      script: |
+        #!/bin/sh
+        set -eux
+        cd /workspace/source
+        npm run lint
+        echo "Linted the code"
+
+    - name: run-tests
+      image: node:22
+      script: |
+        #!/bin/sh
+        set -eux
+        cd /workspace/source
+        npm run test
+        echo "Tests passed"
