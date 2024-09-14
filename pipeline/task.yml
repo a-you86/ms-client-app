@@ -32,11 +32,13 @@ spec:
         npm run lint
         echo "Linted the code"
 
+
     - name: run-tests
       image: node:22
       script: |
         #!/bin/sh
         set -eux
         cd /workspace/source
+        export CHROME_BIN=$(which google-chrome)
         npm run test
         echo "Tests passed"
