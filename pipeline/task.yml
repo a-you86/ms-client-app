@@ -33,7 +33,7 @@ spec:
         echo "Linted the code"
 
     - name: run-tests
-      image: cypress/base:22.8.0  # This image includes Chrome and Node.js
+      image: bitnami/cypress
       script: |
         #!/bin/sh
         set -eux
