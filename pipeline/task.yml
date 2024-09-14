@@ -32,9 +32,8 @@ spec:
         npm run lint
         echo "Linted the code"
 
-
     - name: run-tests
-      image: node:22
+      image: cypress/base:22.8.0  # This image includes Chrome and Node.js
       script: |
         #!/bin/sh
         set -eux
