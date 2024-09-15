@@ -117,13 +117,6 @@ spec:
   workspaces:
     - name: source
       description: Directory containing the cloned source code
-  params:
-    - name: SONARQUBE_HOST_URL
-      type: string
-      description: URL of the SonarQube server
-    - name: SONARQUBE_TOKEN
-      type: string
-      description: SonarQube authentication token
   steps:
     - name: sonarqube-scanner
       image: sonarsource/sonar-scanner-cli:latest
@@ -131,14 +124,9 @@ spec:
         #!/bin/sh
         set -eux
         sonar-scanner \
-          -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
-          -Dsonar.organization=${SONAR_ORGANIZATION} \
+          -Dsonar.projectKey=ms-client-angular \
+          -Dsonar.organization=ms-client-angular \
           -Dsonar.sources=. \
-          -Dsonar.host.url=${SONARQUBE_HOST_URL} \
-          -Dsonar.login=${SONARQUBE_TOKEN} \
+          -Dsonar.host.url=http://localhost:9004 \
+          -Dsonar.login=sqp_2e7f48d4ed105819064b0897902e11bcce2b8f2e \
           -Dsonar.typescript.lcov.reportPaths=coverage/lcov.info
-      env:
-        - name: SONAR_PROJECT_KEY
-          value: ms-client-angular
-        - name: SONAR_ORGANIZATION
-          value: ms-client-angular

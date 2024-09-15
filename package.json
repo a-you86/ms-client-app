@@ -10,7 +10,7 @@
     "prettier:check": "prettier --check \"{,src/**/,webpack/,.blueprint/**/}*.{md,json,yml,js,cjs,mjs,ts,cts,mts,java,html,css,scss}\"",
     "prettier:format": "prettier --write \"{,src/**/,webpack/,.blueprint/**/}*.{md,json,yml,js,cjs,mjs,ts,cts,mts,java,html,css,scss}\"",
     "start": "ng serve",
-    "test": "ng test --no-watch --no-progress --browsers=ChromeHeadlessNoSandbox",
+    "test": "ng test --no-watch --code-coverage --no-progress --browsers=ChromeHeadlessNoSandbox",
     "watch": "ng build --watch --configuration development",
     "sonar": "sonar-scanner"
   },

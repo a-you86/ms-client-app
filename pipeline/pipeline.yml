@@ -43,10 +43,5 @@ spec:
       workspaces:
         - name: source
           workspace: shared-source
-      params:
-        - name: SONARQUBE_HOST_URL
-          value: http://sonarqube:9004
-        - name: SONARQUBE_TOKEN
-          value: sqp_2e7f48d4ed105819064b0897902e11bcce2b8f2e
       runAfter:
         - audit
