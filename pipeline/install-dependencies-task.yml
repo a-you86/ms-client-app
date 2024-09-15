@@ -1,0 +1,16 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: install-dependencies
+spec:
+  workspaces:
+    - name: shared-workspace
+  steps:
+    - name: install-dependencies
+      image: node:22
+      script: |
+        #!/bin/sh
+        set -eux
+        cd /workspace/source
+        npm install --legacy-peer-deps
+        echo "Installed dependencies"

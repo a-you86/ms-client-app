@@ -11,7 +11,8 @@
     "prettier:format": "prettier --write \"{,src/**/,webpack/,.blueprint/**/}*.{md,json,yml,js,cjs,mjs,ts,cts,mts,java,html,css,scss}\"",
     "start": "ng serve",
     "test": "ng test --no-watch --no-progress --browsers=ChromeHeadlessNoSandbox",
-    "watch": "ng build --watch --configuration development"
+    "watch": "ng build --watch --configuration development",
+    "sonar": "sonar-scanner"
   },
   "dependencies": {
     "@angular/animations": "^18.0.0",
@@ -35,6 +36,7 @@
     "@angular/cli": "^18.0.3",
     "@angular/compiler-cli": "^18.0.0",
     "@eslint/js": "^9.10.0",
+    "@playwright/test": "1.40.1",
     "@types/jasmine": "~5.1.0",
     "@typescript-eslint/eslint-plugin": "^8.5.0",
     "@typescript-eslint/parser": "^8.5.0",
@@ -47,7 +49,6 @@
     "eslint-plugin-prettier": "5.2.1",
     "globals": "^15.9.0",
     "jasmine-core": "~5.1.0",
-    "@playwright/test": "1.40.1",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
     "karma-coverage": "~2.2.0",
@@ -56,6 +57,7 @@
     "prettier": "3.3.2",
     "prettier-plugin-java": "2.6.0",
     "prettier-plugin-packagejson": "2.5.0",
+    "sonarqube-scanner": "^4.2.2",
     "typescript": "~5.4.2",
     "typescript-eslint": "^8.2.0"
   },

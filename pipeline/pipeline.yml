@@ -1,0 +1,52 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: pipeline
+spec:
+  workspaces:
+    - name: shared-source
+  tasks:
+    - name: checkout
+      taskRef:
+        name: checkout
+      workspaces:
+        - name: source
+          workspace: shared-source
+    - name: install
+      taskRef:
+        name: install
+      workspaces:
+        - name: source
+          workspace: shared-source
+      runAfter:
+        - checkout
+    - name: lint
+      taskRef:
+        name: lint
+      workspaces:
+        - name: source
+          workspace: shared-source
+      runAfter:
+        - install
+    - name: audit
+      taskRef:
+        name: audit
+      workspaces:
+        - name: source
+          workspace: shared-source
+      runAfter:
+        - lint
+
+    - name: sonarqube-analysis
+      taskRef:
+        name: sonarqube-analysis
+      workspaces:
+        - name: source
+          workspace: shared-source
+      params:
+        - name: SONARQUBE_HOST_URL
+          value: http://sonarqube:9004
+        - name: SONARQUBE_TOKEN
+          value: sqp_2e7f48d4ed105819064b0897902e11bcce2b8f2e
+      runAfter:
+        - audit

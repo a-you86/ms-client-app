@@ -1,0 +1,16 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: lint
+spec:
+  workspaces:
+    - name: shared-workspace
+  steps:
+    - name: lint
+      image: node:22
+      script: |
+        #!/bin/sh
+        set -eux
+        cd /workspace/source
+        npm run lint
+        echo "Linted the code"

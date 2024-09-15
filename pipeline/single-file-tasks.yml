@@ -1,0 +1,144 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: shared-source-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: checkout
+spec:
+  workspaces:
+    - name: source
+      description: Directory to clone the source code
+  steps:
+    - name: git-clone
+      image: alpine/git
+      script: |
+        #!/bin/sh
+        set -eux
+        git clone https://github.com/a-you86/ms-client-app.git "$(workspaces.source.path)"
+        ls -a "$(workspaces.source.path)"
+        echo "Cloned the repository"
+    - name: debug-checkout
+      image: busybox
+      script: |
+        #!/bin/sh
+        set -eux
+        echo "Debugging Checkout Task"
+        pwd
+        ls -la "$(workspaces.source.path)"
+
+---
+
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: install
+spec:
+  workspaces:
+    - name: source
+      description: Directory containing the cloned source code
+  steps:
+    - name: debug-install
+      image: busybox
+      script: |
+        #!/bin/sh
+        set -eux
+        echo "Debugging Install Task"
+        pwd
+        ls -la "$(workspaces.source.path)"
+    - name: install-dependencies
+      image: node:22
+      script: |
+        #!/bin/sh
+        set -eux
+        cd "$(workspaces.source.path)"
+        ls -a
+        if [ -f package.json ]; then
+          npm install --legacy-peer-deps
+          echo "Installed dependencies"
+        else
+          echo "package.json not found"
+          exit 1
+        fi
+---
+
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: lint
+spec:
+  workspaces:
+    - name: source
+      description: Directory to clone the source code
+  steps:
+    - name: lint
+      image: node:22
+      script: |
+        #!/bin/sh
+        set -eux
+        cd "$(workspaces.source.path)"
+        npm run lint
+        echo "Linted the code"
+
+---
+
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: audit
+spec:
+  workspaces:
+    - name: source
+      description: Directory to clone the source code
+  steps:
+    - name: lint
+      image: node:22
+      script: |
+        #!/bin/sh
+        set -eux
+        cd "$(workspaces.source.path)"
+        npm audit
+        echo "Linted the code"
+---
+
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: sonarqube-analysis
+spec:
+  workspaces:
+    - name: source
+      description: Directory containing the cloned source code
+  params:
+    - name: SONARQUBE_HOST_URL
+      type: string
+      description: URL of the SonarQube server
+    - name: SONARQUBE_TOKEN
+      type: string
+      description: SonarQube authentication token
+  steps:
+    - name: sonarqube-scanner
+      image: sonarsource/sonar-scanner-cli:latest
+      script: |
+        #!/bin/sh
+        set -eux
+        sonar-scanner \
+          -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
+          -Dsonar.organization=${SONAR_ORGANIZATION} \
+          -Dsonar.sources=. \
+          -Dsonar.host.url=${SONARQUBE_HOST_URL} \
+          -Dsonar.login=${SONARQUBE_TOKEN} \
+          -Dsonar.typescript.lcov.reportPaths=coverage/lcov.info
+      env:
+        - name: SONAR_PROJECT_KEY
+          value: ms-client-angular
+        - name: SONAR_ORGANIZATION
+          value: ms-client-angular
